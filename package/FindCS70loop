@@ -6,7 +6,7 @@ from selenium import webdriver
 
 # Be sure to specify path to chromedriver in webdriver.Chrone('/here/')
 
-driver = webdriver.Chrome('/Users/collinchin/Desktop/chromedriver')
+driver = webdriver.Chrome('/Users/mylifeisriley/Downloads/chromedriver')
 
 # #Url of classes page
 # driver.get("http://schedule.berkeley.edu/")

@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/PycharmProjects/Schedulizer/.idea/Schedulizer.iml" filepath="$USER_HOME$/PycharmProjects/Schedulizer/.idea/Schedulizer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/schedulizer.iml" filepath="$PROJECT_DIR$/.idea/schedulizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Schedulizer.iml" filepath="$PROJECT_DIR$/.idea/Schedulizer.iml" />
     </modules>
   </component>
 </project>
