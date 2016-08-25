@@ -4,10 +4,13 @@ class AClass:
     def __init__(self, subject, number):
         self.subject = subject
         self.number = number
+        self.lecture_days = []
         self.lecture_start_time = ""
         self.lecture_end_time = ""
         self.discussions = []
         self.labs = []
+        self.numEnrolled = 0
+        self.size = 0
 
     def __str__(self):
         return self.subject + str(self.number)
