@@ -1,11 +1,11 @@
 from selenium import webdriver
+from package import Class
 # import pickle
 
 # This script opens the online schedule of classes in chrome and navigates to the possible options for cs70 fall 2016
 # It should scrape all class info as stored Class class variables (to later be stored in database with fast retrieval)
 
 # Be sure to specify path to chromedriver in webdriver.Chrone('/here/')
-
 driver = webdriver.Chrome('/Users/mylifeisriley/Downloads/chromedriver')
 
 # #Url of classes page
@@ -28,6 +28,9 @@ numberOfClasses = parts[0]
 # getClassInfo(numberOfClasses)
 f = open('output', 'w')
 currClassNum = 0
+
+# Initializing a class
+test_class = Class.AClass("Computer Science", 70)
 
 while currClassNum < int(numberOfClasses):
     # find class / section / dayTime / room / instructor / dateOfClass / status
