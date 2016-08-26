@@ -1,7 +1,14 @@
 from selenium import webdriver
 from package import Class
 from package import Section
+import re
+
 # import pickle # from ways of safe
+subjects = open("subjects.txt")
+subject_list = []
+for line in subjects:
+    subject_list.append(re.search('>(.*)<', line).group(1))
+subjects.close()
 
 # This script opens the online schedule of classes in chrome and navigates to the possible options for cs70 fall 2016
 # It should scrape all class info as stored Class class variables (to later be stored in database with fast retrieval)
@@ -72,7 +79,8 @@ while currClassNum < int(numberOfClasses):
     dateOfClass = driver.find_element_by_id('MTG_TOPIC$' + str(currClassNum)).text
     f.write(dateOfClass + ' ')
 
-    if "LEC" in class_format:
+    if "LEC" in class_format or "REC" in class_format:
+        test_class.ccn = classNum
         for i in range(0, len(days), 2):
             test_class.days.append(days[i:i+2])
         test_class.lecture_start_time = str(startTime)
@@ -87,9 +95,12 @@ while currClassNum < int(numberOfClasses):
         test_section.section_start_time = str(startTime)
         test_section.section_end_time = str(endTime)
         test_section.location = room
-        test_section.instructor = instructor
+
+        if "DIS" in class_format:
+            test_class.add_discussion(test_section)
+        elif "LAB" in class_format:
+            test_class.add_lab(test_section)
 
     currClassNum += 1
-
 # closes browser
 driver.close()
