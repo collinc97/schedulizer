@@ -33,7 +33,7 @@ currClassNum = 0
 # Initializing a class
 test_class = Class.AClass("Computer Science", 70)
 
-class_format = "" # LEC, DIS, LAB, etc.
+class_format = ""  # LEC, DIS, LAB, etc.
 
 while currClassNum < int(numberOfClasses):
     # find class / section / dayTime / room / instructor / dateOfClass / status
@@ -47,8 +47,7 @@ while currClassNum < int(numberOfClasses):
     # sectionParts = sectionText.split(' ')
     # sectionNum = sectionParts[0]
     f.write(sectionNum + ' ')
-    class_format = sectionNum.split("-",1)[1].encode('utf-8')
-
+    class_format = sectionNum.split("-", 1)[1].encode('utf-8')
 
     # find dayTime
     dayTime = driver.find_element_by_id('MTG_DAYTIME$' + str(currClassNum)).text
@@ -57,12 +56,9 @@ while currClassNum < int(numberOfClasses):
     # test_class.lecture_days.append(dayTime)
     days = dayTime.split()[0].encode('utf-8')  # MoWeFr
 
-
     startTime = dayTime.split()[1].encode('utf-8')  # 1:00pm
 
-
     endTime = dayTime.split()[3].encode('utf-8')  # 2:00pm
-
 
     # find room
     room = driver.find_element_by_id('MTG_ROOM$' + str(currClassNum)).text
@@ -79,13 +75,21 @@ while currClassNum < int(numberOfClasses):
     if "LEC" in class_format:
         for i in range(0, len(days), 2):
             test_class.days.append(days[i:i+2])
-        test_class.location = room
         test_class.lecture_start_time = str(startTime)
         test_class.lecture_end_time = str(endTime)
+        test_class.location = room
+        test_class.instructor = instructor
+
     else:
         test_section = Section.Section(str(classNum))
+        for i in range(0, len(days), 2):
+            test_section.days.append(days[i:i+2])
+        test_section.section_start_time = str(startTime)
+        test_section.section_end_time = str(endTime)
+        test_section.location = room
+        test_section.instructor = instructor
 
-    currClassNum = currClassNum + 1
+    currClassNum += 1
 
-#closes browser
+# closes browser
 driver.close()

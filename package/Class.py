@@ -9,6 +9,7 @@ class AClass:
         self.lecture_start_time = ""
         self.lecture_end_time = ""
         self.location = ""
+        self.instructor = ""
         self.discussions = []
         self.labs = []
         self.numEnrolled = 0
