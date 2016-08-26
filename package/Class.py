@@ -4,9 +4,11 @@ class AClass:
     def __init__(self, subject, number):
         self.subject = subject
         self.number = number
-        self.lecture_days = []
+        self.section = ""
+        self.days = []
         self.lecture_start_time = ""
         self.lecture_end_time = ""
+        self.location = ""
         self.discussions = []
         self.labs = []
         self.numEnrolled = 0

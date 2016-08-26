@@ -1,6 +1,6 @@
 from selenium import webdriver
 from package import Class
-import unicodedata
+from package import Section
 # import pickle # from ways of safe
 
 # This script opens the online schedule of classes in chrome and navigates to the possible options for cs70 fall 2016
@@ -51,11 +51,6 @@ while currClassNum < int(numberOfClasses):
     # find dayTime
     dayTime = driver.find_element_by_id('MTG_DAYTIME$' + str(currClassNum)).text
     f.write(dayTime + ' ')
-    if "LEC" in class_format:
-        #test_class.lecture_days.append(dayTime)
-        days = dayTime.split()[0].encode('utf-8') #MoWeFr
-        for i in range(0, len(days), 2):
-            test_class.lecture_days.append(days[i:i+2])
 
     # find room
     room = driver.find_element_by_id('MTG_ROOM$' + str(currClassNum)).text
@@ -69,10 +64,15 @@ while currClassNum < int(numberOfClasses):
     dateOfClass = driver.find_element_by_id('MTG_TOPIC$' + str(currClassNum)).text
     f.write(dateOfClass + ' ')
 
+    if "LEC" in class_format:
+        days = dayTime.split()[0].encode('utf-8') #MoWeFr, etc.
+        for i in range(0, len(days), 2):
+            test_class.days.append(days[i:i+2])
+        test_class.location = room
+    else:
+        test_section = Section.Section(str(classNum))
+
     currClassNum = currClassNum + 1
 
-print(numberOfClasses)
-
-
-# #closes browser
-# browser.close()
+#closes browser
+driver.close()
