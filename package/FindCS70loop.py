@@ -1,7 +1,7 @@
 from selenium import webdriver
 from package import Class
 import unicodedata
-# import pickle
+# import pickle # from ways of safe
 
 # This script opens the online schedule of classes in chrome and navigates to the possible options for cs70 fall 2016
 # It should scrape all class info as stored Class class variables (to later be stored in database with fast retrieval)
@@ -33,7 +33,7 @@ currClassNum = 0
 # Initializing a class
 test_class = Class.AClass("Computer Science", 70)
 
-format = "" # LEC, DIS, LAB, etc.
+class_format = "" # LEC, DIS, LAB, etc.
 
 while currClassNum < int(numberOfClasses):
     # find class / section / dayTime / room / instructor / dateOfClass / status
@@ -47,17 +47,16 @@ while currClassNum < int(numberOfClasses):
     # sectionParts = sectionText.split(' ')
     # sectionNum = sectionParts[0]
     f.write(sectionNum + ' ')
-    #format = sectionNum.split("-",1)[1].encode('utf-8')
-    #print(type(format))
+    class_format = sectionNum.split("-",1)[1].encode('utf-8')
     # find dayTime
     dayTime = driver.find_element_by_id('MTG_DAYTIME$' + str(currClassNum)).text
     f.write(dayTime + ' ')
-    """if format == 'LEC': #This if statement doesn't work yet, something with the var format not being a regular str,
-    it's like unicode
-        print("format was LEC")
+    if "LEC" in class_format:
         #test_class.lecture_days.append(dayTime)
-        print(dayTime.rsplit('-'))"""
-    #print("dayTime: " + dayTime)
+        days = dayTime.split()[0].encode('utf-8') #MoWeFr
+        for i in range(0, len(days), 2):
+            test_class.lecture_days.append(days[i:i+2])
+
     # find room
     room = driver.find_element_by_id('MTG_ROOM$' + str(currClassNum)).text
     f.write(room + ' ')
