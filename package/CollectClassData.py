@@ -38,7 +38,7 @@ for i in range(5, 6): # Eventually change to range(1, len(subject_list))
 
     if moreThanFiftyClassesElement != None:
         driver.find_element_by_xpath("//*[@id='#ICSave']").click()
-    print "noClassElement is " + str(noClassElement)
+        driver.implicitly_wait(2)
     if noClassElement == None:
         index = 0
         classes = []
@@ -47,17 +47,13 @@ for i in range(5, 6): # Eventually change to range(1, len(subject_list))
                 class_name = driver.find_element_by_id('win0divSSR_CLSRSLT_WRK_GROUPBOX2GP$' + str(index)).text
                 class_number = class_name.split()[1]
                 test_class = Class.AClass(subject_list[i], class_number)
-                print(test_class)
                 classes.append(test_class)
                 index += 1
             except common.exceptions.NoSuchElementException:
-                # Okay now this is fast, but for Anthropology it's jumping to this except clause.
-                # It can't find the element "'win0divSSR_CLSRSLT_WRK_GROUPBOX2GP$0'" for some reason.
                 break
-
                 # Put data in the pickled dictionary
                 # for c in classes:
                 #    c.collect_data(driver)
                 #    pickled_data[str(c)] = c
 # Close browser
-#driver.close()
+driver.close()
