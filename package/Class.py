@@ -37,7 +37,7 @@ class AClass:
 
         classesText = driver.find_element_by_class_name("SSSGROUPBOX").text
         parts = classesText.split(" ")
-        numberOfClasses = parts[0]
+        numberOfClasses = int(parts[0].encode('utf-8'))
         class_format = ""  # LEC, DIS, LAB, etc.
 
         # find class / section / dayTime / room / instructor / dateOfClass / status
