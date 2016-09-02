@@ -9,8 +9,16 @@ class Schedule:
         if self.existsTimeConflict(classes):
             return None
         else:
+            lecture_only_schedule = Schedule()
             for c in classes:
-                tree = ScheduleTree(c)
+                lecture_only_schedule.add_class(c)
+            for c in classes:
+                if len(c.discussions) > 0:
+                    tempSchedule = lecture_only_schedule
+                    for dis in c.discussions:
+                        if not tempSchedule.existsTimeConflict(dis):
+                            tempSchedule.add_discussion(dis)
+
 
             return "Schedule"
 
