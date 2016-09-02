@@ -1,5 +1,8 @@
 from package import Section
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class AClass:
     """A class for classes"""
@@ -33,7 +36,17 @@ class AClass:
         driver.find_element_by_name('SSR_CLSRCH_WRK_SUBJECT_SRCH$0').send_keys(self.subject)
         driver.find_element_by_name('SSR_CLSRCH_WRK_CATALOG_NBR$1').send_keys(str(self.number))
         driver.find_element_by_name('CLASS_SRCH_WRK2_SSR_PB_CLASS_SRCH').click()
-        driver.implicitly_wait(100)
+
+        try:
+            moreThanFiftyClassesElement = WebDriverWait(driver, 1).until(
+                EC.presence_of_element_located((By.XPATH, "// *[ @ id = 'DERIVED_SSE_DSP_SSR_MSG_TEXT']")))
+        except:
+            moreThanFiftyClassesElement = None
+
+        if moreThanFiftyClassesElement != None:
+            driver.find_element_by_xpath("//*[@id='#ICSave']").click()
+            # wait_until_clickable_then_click("DERIVED_SSE_DSP_SSR_MSG_TEXT")
+            driver.implicitly_wait(5)
 
         classesText = driver.find_element_by_class_name("SSSGROUPBOX").text
         parts = classesText.split(" ")
@@ -55,10 +68,12 @@ class AClass:
             dayTime = driver.find_element_by_id('MTG_DAYTIME$' + str(i)).text
 
             days = dayTime.split()[0].encode('utf-8')  # MoWeFr
-
-            startTime = dayTime.split()[1].encode('utf-8')  # 1:00pm
-
-            endTime = dayTime.split()[3].encode('utf-8')  # 2:00pm
+            if dayTime.encode('utf-8') == "TBA":
+                startTime = "TBA"
+                endTime = "TBA"
+            else:
+                startTime = dayTime.split()[1].encode('utf-8')  # 1:00pm
+                endTime = dayTime.split()[3].encode('utf-8')  # 2:00pm
 
             # find room
             room = driver.find_element_by_id('MTG_ROOM$' + str(i)).text
@@ -68,15 +83,18 @@ class AClass:
 
             # find section
             dateOfClass = driver.find_element_by_id('MTG_TOPIC$' + str(i)).text
-
-            if "DIS" not in class_format or "LAB" not in class_format:
+            if "DIS" not in class_format and "LAB" not in class_format:
                 self.ccn = classNum
-                for i in range(0, len(days), 2):
-                    self.days.append(days[i:i + 2])
+                if dayTime.encode('utf-8') == "TBA":
+                    self.days.append("TBA")
+                else:
+                    for i in range(0, len(days), 2):
+                        self.days.append(days[i:i + 2])
                 self.lecture_start_time = str(startTime)
                 self.lecture_end_time = str(endTime)
                 self.location = room
                 self.instructor = instructor
+                self.format = class_format.encode('utf-8')
 
             else:
                 test_section = Section.Section(str(classNum))
@@ -88,6 +106,15 @@ class AClass:
 
                 if "DIS" in class_format:
                     self.add_discussion(test_section)
+                    test_section.format = "DIS"
                 elif "LAB" in class_format:
                     self.add_lab(test_section)
-            return self
+                    test_section.format = "LAB"
+
+        return self
+
+    def atLeastOneDayOverlaps(self, otherClass):
+        for day in otherClass.days:
+            if day in self.days:
+                return True
+        return False
