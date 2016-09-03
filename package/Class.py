@@ -22,7 +22,8 @@ class AClass:
         self.size = 0
 
     def __str__(self):
-        return self.subject + " " + str(self.number)
+        return self.subject + " " + str(self.number) + " at " + str(self.location) + ": " + \
+               str(self.lecture_start_time) + "-" + str(self.lecture_end_time) + " on " + self.daysToString()
 
     def add_discussion(self, dis):
         self.discussions.append(dis)
@@ -118,3 +119,23 @@ class AClass:
             if day in self.days:
                 return True
         return False
+
+    def militaryTime(self, string_time):
+        hour = int(string_time[0])
+        minutes = int(string_time[2:4])
+        amOrPm = string_time[len(string_time) - 2:len(string_time)]
+        if amOrPm == "PM":
+            hour += 12
+        if minutes == 59:
+            hour += 1
+            return hour
+        return hour + (minutes / 60.0)
+
+    def daysToString(self):
+        returnString = ""
+        for i in range(len(self.days)):
+            if i == len(self.days) - 1:
+                returnString += self.days[i]
+            else:
+                returnString += self.days[i] + ", "
+        return returnString

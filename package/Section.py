@@ -11,4 +11,14 @@ class Section:
         self.size = 0
 
     def __str__(self):
-        return self.section
+        return str(self.section_start_time) + "-" + str(self.section_end_time) + \
+               " at " + str(self.location) + " on " + self.daysToString()
+
+    def daysToString(self):
+        returnString = ""
+        for i in range(len(self.days)):
+            if i == len(self.days) - 1:
+                returnString += self.days[i]
+            else:
+                returnString += self.days[i] + ", "
+        return returnString
