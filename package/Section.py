@@ -12,7 +12,7 @@ class Section:
 
     def __str__(self):
         return str(self.section_start_time) + "-" + str(self.section_end_time) + \
-               " at " + str(self.location) + " on " + self.daysToString()
+               " at " + str(self.location) + " on " + self.daysToString() + " " + str(self.ccn)
 
     def daysToString(self):
         returnString = ""
