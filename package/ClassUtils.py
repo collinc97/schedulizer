@@ -1,16 +1,24 @@
 import urllib
 import json
+import re
+
+def getPlaceId(place):
+    apiKey = "AIzaSyBE-lTwLCv39vFnOTCON5BxT6dbueHFB7k"
+    url = "https://maps.googleapis.com/maps/api/place/textsearch/xml?query=" + place + "&key=" + apiKey
+    response = urllib.urlopen(url)
+    data = response.read()
+    print url
+    placeId = re.search('<place_id>(.*)</place_id>', data).group(1)
+    return placeId
 
 def findDistanceBetweenTwoClasses(classPair):
     class1 = classPair[0]
     class2 = classPair[1]
-    toString = cleanLocation(class1.location)
-    fromString = cleanLocation(class2.location)
+    toString = getPlaceId(cleanLocation(class1.location))
+    fromString = getPlaceId(cleanLocation(class2.location))
     apiKey = "AIzaSyCCCF7-uLhdH9XJdJP6WMXcu4-MFXPCALo"
-    url = "https://maps.googleapis.com/maps/api/distancematrix/json?mode=walking&units=imperial" \
-          "&origins=" + toString + ",Berkeley,CA" \
-                                   "&destinations=" + fromString + ",Berkeley,CA&key=" \
-          + apiKey
+    url = "https://maps.googleapis.com/maps/api/distancematrix/json?mode=walking&units=imperial&origins=place_id:" + \
+          toString + "&destinations=place_id:" + fromString + "&key=" + apiKey
     response = urllib.urlopen(url)
     data = json.loads(response.read())
     distance = data["rows"][0][u'elements'][0][u'duration'][u'text']

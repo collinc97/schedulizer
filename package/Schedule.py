@@ -49,7 +49,7 @@ class ASchedule:
             return 0
         for s in schedules:
             s.totalDistance()
-        sortedSchedules = sorted(schedules, key=functools.cmp_to_key(cmp))
+        sortedSchedules = sorted(schedules, key=functools.cmp_to_key(cmp), reverse=True)
         return sortedSchedules
 
     def existsLectureTimeConflict(self, classes, index):
