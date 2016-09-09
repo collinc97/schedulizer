@@ -14,7 +14,7 @@ for line in subjects:
     subject_list.append(re.search('>(.*)<', line).group(1))
 subjects.close()
 pickled_data = {}
-pickle_out = open("class_data.pickle", "wb")
+pickle_out = open("class_info.pickle", "wb")
 classesNotForUnderGrad = ['Advanced Doctoral Studies, "Ag &amp; Resource Econ &amp Pol', 'Applied Science &amp; Tech',
                           'Business Admin-MBA', 'Business Admin-PhD', 'Comparative Biochemistry', 'Critical Theory',
                           'Data Science', 'Development Engineering', 'Development Practice', 'European Studies',
@@ -69,7 +69,7 @@ for c in classes:
     c.collect_data(driver)
     pickled_data[str(c)] = c
 
-with open('class_data.pickle', 'wb') as handle:
+with open('class_info.pickle', 'wb') as handle:
   pickle.dump(pickled_data, handle)
 
 # Print how long it took

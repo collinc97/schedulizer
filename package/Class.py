@@ -12,8 +12,8 @@ class AClass:
         self.number = number
         self.ccn = ""
         self.days = []
-        self.lecture_start_time = ""
-        self.lecture_end_time = ""
+        self.start_time = ""
+        self.end_time = ""
         self.location = ""
         self.instructor = ""
         self.discussions = []
@@ -22,8 +22,12 @@ class AClass:
         self.size = 0
 
     def __str__(self):
+        return self.subject + " " + str(self.number) #+ " at " + str(self.location) + ": " + \
+               #str(self.start_time) + "-" + str(self.end_time) + " on " + self.daysToString()
+
+    def strWithInfo(self):
         return self.subject + " " + str(self.number) + " at " + str(self.location) + ": " + \
-               str(self.lecture_start_time) + "-" + str(self.lecture_end_time) + " on " + self.daysToString()
+        str(self.start_time) + "-" + str(self.end_time) + " on " + self.daysToString()
 
     def add_discussion(self, dis):
         self.discussions.append(dis)
@@ -91,8 +95,8 @@ class AClass:
                 else:
                     for i in range(0, len(days), 2):
                         self.days.append(days[i:i + 2])
-                self.lecture_start_time = str(startTime)
-                self.lecture_end_time = str(endTime)
+                self.start_time = str(startTime)
+                self.end_time = str(endTime)
                 self.location = room
                 self.instructor = instructor
                 self.format = class_format.encode('utf-8')
@@ -101,8 +105,8 @@ class AClass:
                 test_section = Section.Section(str(classNum))
                 for i in range(0, len(days), 2):
                     test_section.days.append(days[i:i + 2])
-                test_section.section_start_time = str(startTime)
-                test_section.section_end_time = str(endTime)
+                test_section.start_time = str(startTime)
+                test_section.end_time = str(endTime)
                 test_section.location = room
 
                 if "DIS" in class_format:

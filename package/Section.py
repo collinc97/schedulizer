@@ -3,15 +3,15 @@ class Section:
     def __init__(self, ccn):
         self.ccn = ccn
         self.days = []
-        self.section_start_time = ""
-        self.section_end_time = ""
+        self.start_time = ""
+        self.end_time = ""
         self.location = ""
         self.format = ""
         self.numEnrolled = 0
         self.size = 0
 
-    def __str__(self):
-        return str(self.section_start_time) + "-" + str(self.section_end_time) + \
+    def strWithInfo(self):
+        return str(self.start_time) + "-" + str(self.end_time) + \
                " at " + str(self.location) + " on " + self.daysToString() + " " + str(self.ccn)
 
     def daysToString(self):

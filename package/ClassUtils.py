@@ -11,11 +11,11 @@ def findDistanceBetweenTwoClasses(classPair):
           "&origins=" + toString + ",Berkeley,CA" \
                                    "&destinations=" + fromString + ",Berkeley,CA&key=" \
           + apiKey
-    print url
     response = urllib.urlopen(url)
     data = json.loads(response.read())
     distance = data["rows"][0][u'elements'][0][u'duration'][u'text']
-    return distance.encode('utf-8')
+    return int(distance.encode('utf-8').split()[0])
+
 
 def cleanLocation(location):
     def hasNumbers(inputString):
