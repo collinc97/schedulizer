@@ -10,9 +10,12 @@ start_time = datetime.now()
 with open('class_info.pickle', 'rb') as handle:
   class_info = pickle.load(handle)
 
-# class_list = [class_data["History 7A"]]
-class_list = [class_info["Spanish 100"], class_info["Nutritional Science &amp; Tox 10"],
-              class_info["Computer Science 186"], class_info["Computer Science 188"]]
+# pickled_data = {}
+# with open('place_ids.pickle', 'wb') as handle:
+#   pickle.dump(pickled_data, handle)
+
+class_list = [class_info["Computer Science 186"], class_info["Computer Science 188"],
+              class_info["Spanish 100"], class_info["Nutritional Science &amp; Tox 10"]]
 schedule = Schedule.ASchedule(class_list)
 schedules = schedule.generateSchedules(schedule.classes)
 
@@ -21,5 +24,7 @@ sortedSchedules = schedules[0].sortSchedulesByMinDistance(schedules)
 for s in sortedSchedules:
     print "Distance for schedule below: " + str(s.distance)
     print s
-print "Generated and sorted " + str(len(schedules)) + " in "
+print "Generated and sorted " + str(len(schedules)) + " schedules in "
 print str(datetime.now() - start_time)
+
+# Generated and sorted 2868 schedules in 5:07.774479

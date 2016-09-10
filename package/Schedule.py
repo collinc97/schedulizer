@@ -1,6 +1,7 @@
 import copy
 import ClassUtils
 import functools
+import pickle
 
 class ASchedule:
 

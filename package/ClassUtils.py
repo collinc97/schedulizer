@@ -1,22 +1,33 @@
 import urllib
 import json
 import re
+import pickle
+import contextlib
 
-def getPlaceId(place):
-    apiKey = "AIzaSyBE-lTwLCv39vFnOTCON5BxT6dbueHFB7k"
+def getPlaceId(place, place_ids):
+    if place in place_ids:
+        print "Already cached place: " + str(place)
+        return place_ids[place]
+    apiKey = "AIzaSyC1AwAjZ4oD6Cg3kmxAtiu6lOpJLiC59nw"
     url = "https://maps.googleapis.com/maps/api/place/textsearch/xml?query=" + place + "&key=" + apiKey
-    response = urllib.urlopen(url)
-    data = response.read()
-    print url
-    placeId = re.search('<place_id>(.*)</place_id>', data).group(1)
+    with contextlib.closing(urllib.urlopen(url)) as response:
+        data = response.read()
+        placeId = re.search('<place_id>(.*)</place_id>', data).group(1)
+        place_ids[place] = placeId
+        print "Just cached: " + str(place)
+    # response = urllib.urlopen(url)
+    with open('place_ids.pickle', 'wb') as handle:
+        pickle.dump(place_ids, handle)
     return placeId
 
 def findDistanceBetweenTwoClasses(classPair):
     class1 = classPair[0]
     class2 = classPair[1]
-    toString = getPlaceId(cleanLocation(class1.location))
-    fromString = getPlaceId(cleanLocation(class2.location))
-    apiKey = "AIzaSyCCCF7-uLhdH9XJdJP6WMXcu4-MFXPCALo"
+    with open('place_ids.pickle', 'rb') as handle:
+        place_ids = pickle.load(handle)
+    toString = getPlaceId(cleanLocation(class1.location), place_ids)
+    fromString = getPlaceId(cleanLocation(class2.location), place_ids)
+    apiKey = "AIzaSyC1AwAjZ4oD6Cg3kmxAtiu6lOpJLiC59nw"
     url = "https://maps.googleapis.com/maps/api/distancematrix/json?mode=walking&units=imperial&origins=place_id:" + \
           toString + "&destinations=place_id:" + fromString + "&key=" + apiKey
     response = urllib.urlopen(url)
